@@ -9,6 +9,18 @@ version: '3.1'
 #     mongo is using default host:port
 ##########################################################################
 services:
+
+  install:
+    container_name: install
+    image: speakeasy/install
+    build: .
+    volumes:
+      - file_share:/var/speakeasy
+      - models:/var/speakeasy/models
+    environment:
+      SPEAKEASY_SHARED: ${SPEAKEASY_SHARED}
+      SPEAKEASY_VERSION: ${SPEAKEASY_VERSION}
+
   ui:
     container_name: ui
     image: speakeasy/ui:v${SPEAKEASY_VERSION}
@@ -121,6 +133,7 @@ services:
       - nifi_certfiles:/opt/certfiles
       - nifi_data:/opt/nifi
       - file_share:/var/speakeasy
+      - models:/var/speakeasy/models
     networks:
       - speakeasy
 
@@ -135,6 +148,7 @@ services:
     restart: always
     volumes:
       - file_share:/var/speakeasy
+      - models:/var/speakeasy/models
     environment:
       - FLASK_SERVER_NAME=0.0.0.0
       - FLASK_SERVER_PORT=5010
@@ -147,22 +161,22 @@ volumes:
   nifi_data:
   mongodb:
     driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: ${SPEAKEASY_SHARED}/mongodb
+#    driver_opts:
+#      o: bind
+#      type: none
+#      device: ${SPEAKEASY_SHARED}/mongodb
   models:
     driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: ${SPEAKEASY_SHARED}/models
+#    driver_opts:
+#      o: bind
+#      type: none
+#      device: ${SPEAKEASY_SHARED}/models
   file_share:
     driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: ${SPEAKEASY_SHARED}
+#    driver_opts:
+#      o: bind
+#      type: none
+#      device: ${SPEAKEASY_SHARED}
 
 networks:
   speakeasy:

@@ -6,7 +6,7 @@ echo "...Get the ende model from amazon and rename it"
 if [ ! -d /var/speakeasy/models/ende ]
 then
   cd /var/speakeasy/models
-  wget https://s3.amazonaws.com/opennmt-models/averaged-ende-export500k.tar.gz
+  wget -q https://s3.amazonaws.com/opennmt-models/averaged-ende-export500k.tar.gz
   tar xf averaged-ende-export500k.tar.gz
   mv averaged-ende-export500k ende
   rm averaged-ende-export500k.tar.gz

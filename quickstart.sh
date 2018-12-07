@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/bin/bash -ex
+dir=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
+env | grep SPEAKEASY
 
 # Assumptions:  
 #
@@ -10,28 +12,28 @@
 
 ###########################################3
 # Define docker-compose variables
-echo 'SPEAKEASY_SHARED=/var/speakeasy' >.env
-echo 'SPEAKEASY_VERSION=0.4' >>.env
+#echo 'SPEAKEASY_SHARED=/var/speakeasy' >.env
+#echo 'SPEAKEASY_VERSION=0.4' >>.env
 
 ###########################################3
 # Need root for the folder create
-sudo install -o $USER -g $USER -d /var/speakeasy
+#sudo install -o $USER -g $USER -d /var/speakeasy
 ###########################################3
 # Create sub-folders
-mkdir /var/speakeasy/mongodb
-mkdir /var/speakeasy/output
-mkdir /var/speakeasy/input
-mkdir /var/speakeasy/input/ende
-mkdir /var/speakeasy/input/kor
-mkdir /var/speakeasy/models
+mkdir -p /var/speakeasy/mongodb
+mkdir -p /var/speakeasy/output
+mkdir -p /var/speakeasy/input
+mkdir -p /var/speakeasy/input/ende
+mkdir -p /var/speakeasy/input/kor
+mkdir -p /var/speakeasy/models
 
 # Install models
-cp -r ~/speakeasy/models /var/speakeasy/
+cp -r $dir/models /var/speakeasy/
 cd /var/speakeasy/models
 ./install_ende.sh
 
 # Build and run ...
-cd ~/speakeasy
-docker-compose build
-docker-compose up -d
-docker-compose ps
+#cd $dir
+#docker-compose build
+#docker-compose up -d
+#docker-compose ps
