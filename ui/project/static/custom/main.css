@@ -1,0 +1,20 @@
+
+.error {
+  color: red;
+  font-size: .8em;
+}
+.pagination-page-info {
+    padding: .6em;
+    padding-left: 0;
+    width: 40em;
+    margin: .5em;
+    margin-left: 0;
+    font-size: 8px;
+}
+.pagination-page-info b {
+    color: black;
+    background: #D6DBDF;
+    padding-left: 2px;
+    padding: .1em .25em;
+    font-size: 110%;
+}

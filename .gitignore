@@ -1,0 +1,9 @@
+.git
+./models/ende
+models/ende
+./ui/ENV
+ui/ENV
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class

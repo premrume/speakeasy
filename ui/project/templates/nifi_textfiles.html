@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% from "_form_macros.html" import render_field %}
+
+{% block content %}
+
+<div class="jumbotron">
+  <h1 class="text-left">COMPARE TEXT</h1>
+  <h3 class="text-left">Compare input text to output text</h3>
+
+   <div class="card-group">
+
+    <div class="card border-dark mb-3" style="max-width: 28rem;">
+      <h5 class="card-header">
+           INPUT
+      </h5>
+      <div class="card-body text-dark">
+        <div class="md-form">
+           <textarea readonly type="text" class="md-textarea form-control" rows="12"> {{ input_display }} </textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="card border-dark mb-3" style="max-width: 28rem;">
+      <h5 class="card-header">
+           OUTPUT
+      </h5>
+      <div class="card-body text-dark">
+        <div class="md-form">
+           <textarea readonly type="text" class="md-textarea form-control" rows="12"> {{ output_display }} </textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="card border-dark mb-3" style="max-width: 28rem;">
+      <h5 class="card-header">
+           UPDATE (TODO:  Save this update ...)
+      </h5>
+      <div class="card-body text-dark">
+        <div class="md-form">
+           <textarea type="text" class="md-textarea form-control" rows="12"> {{ output_display }} </textarea>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,169 @@
+version: '3.1' 
+
+##########################################################################
+# PRE-REQ:
+#  SPEAKEASY_SHARED is defined in .env (eg:  /var/speakeasy)
+#  SEE quickstart.sh for volume requirements!
+#  Network is "speakeasy"
+#     This will need some tweeking with non-vm install
+#     mongo is using default host:port
+##########################################################################
+services:
+  ui:
+    container_name: ui
+    image: speakeasy/ui:v${SPEAKEASY_VERSION}
+    depends_on:
+      - mongo
+    build: ./ui
+    restart: always
+    environment:
+      - FLASK_SERVER_NAME=0.0.0.0
+      - FLASK_SERVER_PORT=5000
+      - FLASK_DEBUG=1
+      - FLASK_ENV=development
+      - MONGO_EXPRESS=http://0.0.0.0:8071/
+      - MONGO_CONNECT=mongodb://speakeasy:Speakeasy123@mongo/speakeasy?authSource=admin
+      - OCR_SERVICE=http://0.0.0.0:5010/poc_api/
+      - TFC_SERVICE=http://0.0.0.0:5020/poc_api/
+      - NIFI_SERVICE=http://0.0.0.0:8080/nifi/
+    ports:
+      - "5000:5000"
+    volumes:
+      - file_share:/var/speakeasy
+    networks:
+      - speakeasy
+
+  mongo:
+    container_name: mongo
+    image: speakeasy/mongo:v${SPEAKEASY_VERSION}
+    restart: always
+    build: ./mongo
+    networks:
+      - speakeasy
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=speakeasy
+      - MONGO_INITDB_ROOT_PASSWORD=Speakeasy123
+      - MONGO_INITDB_DATABASE=speakeasy
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb:/data/db
+
+  mongo_express:
+    container_name: mongo_express
+    image: speakeasy/mongo_express:v${SPEAKEASY_VERSION}
+    restart: always
+    depends_on:
+      - mongo
+    build: ./mongo_express
+    networks:
+      - speakeasy
+    ports:
+      - "8070-8071:8080-8081"
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=speakeasy
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=Speakeasy123
+
+  tfs_service:
+    container_name: tfs_service  
+    image: speakeasy/tfs_service:v${SPEAKEASY_VERSION}
+    networks:
+      - speakeasy
+    ports:
+      - "8500:8500"
+    build: ./tfs_service
+    restart: always
+    volumes:
+      - models:/models
+    environment:
+      - MODEL_CONFIG_FILE=/models/models.conf
+
+  tfc_service:
+    container_name: tfc_service
+    image: speakeasy/tfc_service:v${SPEAKEASY_VERSION}
+    depends_on:
+      - tfs_service
+    networks:
+      - speakeasy
+    ports:
+      - "5020:5020"
+    build: ./tfc_service
+    restart: always
+    volumes:
+      - models:/models
+    environment:
+      - FLASK_SERVER_NAME=0.0.0.0
+      - FLASK_SERVER_PORT=5020
+      - FLASK_DEBUG=1
+      - TF_SERVER_NAME=tfs_service
+      - TF_SERVER_PORT=8500
+      - ENDE_MODEL_SENTENCE_PIECE=/models/ende/1539080952/assets.extra/wmtende.model
+      - ENDE_MODEL_NAME=ende
+      - ENDE_MODEL_SIGNATURE_NAME=serving_default
+
+  nifi_service:
+    container_name: nifi_service  
+    image: speakeasy/nifi_service:v${SPEAKEASY_VERSION}
+    build: ./nifi_service
+    depends_on:
+      - tfs_service
+    environment:
+      - MONGO_CONNECT=mongodb://speakeasy:Speakeasy123@mongo/speakeasy?authSource=admin
+      - TFC_SERVICE=http://tfc_service:5020/poc_api
+      - OCR_SERVICE_CLEAN=http://ocr_service:5010/poc_api/ocr_client/clean
+      - OCR_SERVICE_OCR=http://ocr_service:5010/poc_api/ocr_client/ocr
+    ports:
+      - "8080-8081:8080-8081"
+      - "7001-7002:7001-7002"
+    volumes:
+      - nifi_datafiles:/opt/datafiles
+      - nifi_scriptfiles:/opt/scriptfiles
+      - nifi_certfiles:/opt/certfiles
+      - nifi_data:/opt/nifi
+      - file_share:/var/speakeasy
+    networks:
+      - speakeasy
+
+  ocr_service:
+    container_name: ocr_service  
+    image: speakeasy/ocr_service:v${SPEAKEASY_VERSION}
+    networks:
+      - speakeasy
+    ports:
+      - "5010:5010"
+    build: ./ocr_service
+    restart: always
+    volumes:
+      - file_share:/var/speakeasy
+    environment:
+      - FLASK_SERVER_NAME=0.0.0.0
+      - FLASK_SERVER_PORT=5010
+      - FLASK_DEBUG=1
+
+volumes:
+  nifi_datafiles:
+  nifi_scriptfiles:
+  nifi_certfiles:
+  nifi_data:
+  mongodb:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ${SPEAKEASY_SHARED}/mongodb
+  models:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ${SPEAKEASY_SHARED}/models
+  file_share:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ${SPEAKEASY_SHARED}
+
+networks:
+  speakeasy:
+    driver: bridge
