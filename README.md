@@ -52,8 +52,7 @@ git clone https://github.boozallencsn.com/tampaml/speakeasy.git --branch V0.3
 ```
 # Log off the VPN now!
 cd speakeasy
-#  quickstart setups up the filesystem and fetches the ende model.
-./quickstart.sh
+make
 ```
 
 4. UI
