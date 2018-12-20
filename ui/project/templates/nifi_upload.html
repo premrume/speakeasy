@@ -3,19 +3,27 @@
 
 {% block content %}
 
-<div class="card">
-  <div class="card-body">
-    <h5 class="card-title">Upload</h5>
-    <form action="{{ url_for('nifi.go_nifi_upload') }}" method="POST" enctype="multipart/form-data">
-      {{ form.csrf_token }}
-      <dl>
-        {{ render_field(form.model, placeholder="Enter model (ende or kor)") }}
-        {{ render_field(form.upload) }}
-      </dl>
-      <button class="btn btn-sm btn-success" type="submit">Upload</button>
-      <a href="{{ url_for('nifi.go_nifi_list') }}" class="btn btn-sm btn-primary">Status</a>
-    </form>
+<hr>
+  <div class="container" id="equal-card-decks">
+
+    <!--.card deck -->
+    <div class="card-deck">
+
+     <div class="card">
+        <div class="card-block">
+          <h5 class="card-title">Upload</h5>
+          <form action="{{ url_for('nifi.go_nifi_upload') }}" method="POST" enctype="multipart/form-data">
+            {{ form.csrf_token }}
+            {{ render_field(form.model, placeholder="Enter model (ende or kor)") }}
+            {{ render_field(form.upload, multiple="multiple") }}
+            {{ render_field(form.submit) }}
+          </form>
+        </div>
+     </div>
+
+    </div>
+    <a href="{{ url_for('nifi.go_nifi_list') }}" class="btn btn-sm btn-primary">Home</a>
   </div>
-</div>
+</hr>
 
 {% endblock %}

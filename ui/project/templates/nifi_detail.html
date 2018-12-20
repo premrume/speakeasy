@@ -3,85 +3,91 @@
 
 {% block content %}
 
-<div class="jumbotron">
-  <p class="text-right text-muted">{{ nifi.uuid }} </p>
-  <h4 class="text-left">{{ nifi.source }} </h4>
-  <h5 class="text-left text-muted"> {{ nifi.result }} </h5>
+<hr>
 
-   <div class="card-group">
+  <div class="container" id="equal-card-decks">
+    <p class="text-right text-muted">{{ nifi.uuid }} </p>
+    <p class="text-right text-muted"> {{ nifi.result }} </p>
+    <h3 class="text-left">{{ nifi.source }} </h3>
 
-    <div class="card border-dark mb-3" style="max-width: 28rem;">
-      <h5 class="card-header">
+    <!--.card deck -->
+    <div class="card-deck">
+
+      <!--.card-->
+      <div class="card border-dark mb-3" style="max-width: 28rem;">
+        <h5 class="card-header">
            UPLOAD
-      </h5>
-      <div class="card-body text-dark">
-        <p class="card-text text-right"><small class="text-muted">{{ nifi.input.start }}</small></p>
-        <p class="card-text text-left">{{ nifi.input.msg }}</p>
-      </div>
-     {% if nifi.input_data.grid %}
-     <div class="card-footer">
-        <a href="{{ url_for('nifi.go_nifi_input', uuid=nifi.uuid) }}" class="card-link">original</a>
+        </h5>
+        <div class="card-body text-dark">
+          <p class="card-text text-right"><small class="text-muted">{{ nifi.input.start }}</small></p>
+          <p class="card-text text-left">{{ nifi.input.msg }}</p>
+        </div>
+        {% if nifi.input_data.grid %}
+        <div class="card-footer">
+           <a href="{{ url_for('nifi.go_nifi_input', uuid=nifi.uuid) }}" class="card-link">original</a>
+        </div>
+        {% endif %}
      </div>
-     {% endif %}
-    </div>
 
-  {% if nifi.ocr.msg %}
-    <div class="card border-dark mb-3" style="max-width: 28rem;">
-      <h5 class="card-header">
+     <!--.card-->
+     {% if nifi.ocr.msg %}
+     <div class="card border-dark mb-3" style="max-width: 28rem;">
+       <h5 class="card-header">
            OCR
-      </h5>
-      <div class="card-body text-dark">
-        <p class="card-text text-right"><small class="text-muted">{{ nifi.ocr.start }}</small></p>
-        <p class="card-text text-left">{{ nifi.ocr.msg }}</p>
-      </div>
-     {% if nifi.ocr_data.grid %}
-     <div class="card-footer">
-        <a href="{{ url_for('nifi.go_nifi_clean', uuid=nifi.uuid) }}" class="card-link">clean</a>
-        <a href="{{ url_for('nifi.go_nifi_ocr', uuid=nifi.uuid) }}" class="card-link">ocr</a>
+       </h5>
+       <div class="card-body text-dark">
+         <p class="card-text text-right"><small class="text-muted">{{ nifi.ocr.start }}</small></p>
+         <p class="card-text text-left">{{ nifi.ocr.msg }}</p>
+       </div>
+       {% if nifi.ocr_data.grid %}
+       <div class="card-footer">
+          <a href="{{ url_for('nifi.go_nifi_clean', uuid=nifi.uuid) }}" class="card-link">clean</a>
+          <a href="{{ url_for('nifi.go_nifi_ocr', uuid=nifi.uuid) }}" class="card-link">ocr</a>
+       </div>
+      {% endif %}
      </div>
      {% endif %}
-    </div>
-  {% endif %}
 
-  {% if nifi.route.msg %}
-    <div class="card border-dark mb-3" style="max-width: 28rem;">
-      <h5 class="card-header">
+     <!--.card-->
+     {% if nifi.route.msg %}
+     <div class="card border-dark mb-3" style="max-width: 28rem;">
+       <h5 class="card-header">
            ROUTE
-      </h5>
-      <div class="card-body text-dark">
-        <p class="card-text text-right"><small class="text-muted">{{ nifi.route.start }}</small></p>
-        <p class="card-text text-left">{{ nifi.route.msg }}</p>
-      </div>
-    </div>
-  {% endif %}
-
-  {% if nifi.translate.msg %}
-    <div class="card border-dark mb-3" style="max-width: 28rem;">
-      <h5 class="card-header">
-           TRANSLATE
-      </h5>
-      <div class="card-body text-dark">
-        <p class="card-text text-right"><small class="text-muted">{{ nifi.translate.start }}</small></p>
-        <p class="card-text text-left">{{ nifi.translate.msg }}</p>
-      </div>
-     {% if nifi.translate_data.grid %}
-     <div class="card-footer">
-        <a href="{{ url_for('nifi.go_nifi_translate', uuid=nifi.uuid) }}" class="card-link">translation</a>
+       </h5>
+       <div class="card-body text-dark">
+         <p class="card-text text-right"><small class="text-muted">{{ nifi.route.start }}</small></p>
+         <p class="card-text text-left">{{ nifi.route.msg }}</p>
+       </div>
      </div>
      {% endif %}
+
+     <!--.card-->
+     {% if nifi.translate.msg %}
+     <div class="card border-dark mb-3" style="max-width: 28rem;">
+        <h5 class="card-header">
+           TRANSLATION
+        </h5>
+        <div class="card-body text-dark">
+          <p class="card-text text-right"><small class="text-muted">{{ nifi.translate.start }}</small></p>
+          <p class="card-text text-left">{{ nifi.translate.msg }}</p>
+        </div>
+        {% if nifi.translate_data.grid %}
+        <div class="card-footer">
+           <a href="{{ url_for('nifi.go_nifi_translate', uuid=nifi.uuid) }}" class="card-link">translation</a>
+        </div>
+        {% endif %}
+     </div>
+     {% endif %}
+
     </div>
-  {% endif %}
 
-  </div>
-
-  <div class="row">
     <a href="{{ url_for('nifi.go_nifi_details', nifi_uuid=nifi.uuid) }}" class="btn btn-sm btn-primary">Refresh</a>
-    <a href="{{ url_for('nifi.go_nifi_list') }}" class="btn btn-sm btn-secondary">Status</a>
+    <a href="{{ url_for('nifi.go_nifi_list') }}" class="btn btn-sm btn-secondary">Home</a>
     {% if nifi.result == 'DONE' %}
-    <a href="{{ url_for('nifi.go_nifi_input_other', uuid=nifi.uuid) }}" class="btn btn-sm btn-success">Compare</a>
+      <a href="{{ url_for('nifi.go_nifi_input_other', uuid=nifi.uuid) }}" class="btn btn-sm btn-success">Compare</a>
     {% endif %}
-  </div>
 
-</div>
+  </div>
+</hr>
 
 {% endblock %}

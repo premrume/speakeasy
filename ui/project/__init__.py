@@ -1,43 +1,40 @@
 #################
 #### imports ####
 #################
-
-from flask import Flask, render_template, send_from_directory
-from flask_uploads import UploadSet, IMAGES, TEXT, DOCUMENTS, configure_uploads
+from flask import Flask, render_template
+from flask_uploads import UploadSet, IMAGES, TEXT, configure_uploads
 from flask_mongoengine import MongoEngine, MongoEngineSessionInterface
 
 ################
 #### config ####
 ################
-
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('flask.cfg')
 
+################
+#### mongoengine pain ####
+################
 db = MongoEngine()
 db.init_app(app)
 
-# Configure the image uploading via Flask-Uploads
-ende = UploadSet('ende', IMAGES + TEXT + DOCUMENTS)
-kor = UploadSet('kor', IMAGES + TEXT + DOCUMENTS)
+################
+#### flask-uploads pain ####
+################
+ende = UploadSet('ende', IMAGES + TEXT)
+kor = UploadSet('kor', IMAGES + TEXT)
 configure_uploads(app, ende)
 configure_uploads(app, kor)
 
 ####################
 #### blueprints ####
 ####################
-
-from project.home.views import home_blueprint
 from project.nifi.views import nifi_blueprint
-
 # register the blueprints
-app.register_blueprint(home_blueprint)
 app.register_blueprint(nifi_blueprint)
-
 
 ############################
 #### custom error pages ####
 ############################
-
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
