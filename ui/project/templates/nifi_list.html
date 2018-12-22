@@ -12,9 +12,13 @@
           <tr>
             <th>#</th>
             <th><a title="Model">Model</a></th>
-            <th><a title="File Name">Source</a></th>
-            <th><a title="Upload Time Stamp">Start Time</a></th>
-            <th><a title="Process Detail">Details</a></th>
+            <th><a title="SourceLanguage">Source Language</a></th>
+            <th><a title="TargetLanguage">Target Language</a></th>
+            <th><a title="File Name">Source File</a></th>
+            <th><a title="Start Time Stamp">Start Time</a></th>
+            <th><a title="End Time Stamp">End Time</a></th>
+            <th><a title="State">Current State</a></th>
+            <th><a title="Process Detail">Detail Link</a></th>
           <tr>
         </thead>
         <tbody>
@@ -22,8 +26,12 @@
           <tr>
             <td>{{ loop.index + (page - 1) * per_page }}</td>
             <td><a title="Model"> {{ nifi.model }} </a></td>
+            <td><a title="SourceLanguage"> {{ nifi.sourceLanguage }} </a></td>
+            <td><a title="TargetLanguage"> {{ nifi.targetLanguage }} </a></td>
             <td><a title="{{ nifi.uuid}}"> {{ nifi.source }} </a></td>
-            <td><a title="StartTime"> {{ nifi.input.start }} </a></td>
+            <td><a title="Input"> {{ nifi.input.start }} </a></td>
+            <td><a title="Complete"> {{ nifi.complete.start }} </a></td>
+            <td><a title="State"> {{ nifi.state }} </a></td>
             <td><a title="Click for Status" href="{{ url_for('nifi.go_nifi_details', nifi_uuid=nifi.uuid) }}">{{ nifi.result}} </a></td>
           </tr>
           {% endfor %}

@@ -5,7 +5,7 @@
 
 <hr>
 
-  <div class="container" id="equal-card-decks">
+  <div class="container-fluid" id="equal-card-decks">
     <p class="text-right text-muted">{{ nifi.uuid }} </p>
     <p class="text-right text-muted"> {{ nifi.result }} </p>
     <h3 class="text-left">{{ nifi.source }} </h3>
@@ -15,12 +15,14 @@
 
       <!--.card-->
       <div class="card border-dark mb-3" style="max-width: 28rem;">
-        <h5 class="card-header">
-           UPLOAD
-        </h5>
-        <div class="card-body text-dark">
+        <div class="card-header">
           <p class="card-text text-right"><small class="text-muted">{{ nifi.input.start }}</small></p>
-          <p class="card-text text-left">{{ nifi.input.msg }}</p>
+          <h4 class="card-title">Stored Input</h4>
+        </div>
+        <div class="card-body text-dark">
+          <h5 class="card-title">{{ nifi.input.msg }}</h5>
+          <p class="card-text text-left">Name: [{{ nifi.input.filename }}]</p>
+          <p class="card-text text-left">Size: [{{ nifi.input.fileSize }}]</p>
         </div>
         {% if nifi.input_data.grid %}
         <div class="card-footer">
@@ -32,12 +34,13 @@
      <!--.card-->
      {% if nifi.ocr.msg %}
      <div class="card border-dark mb-3" style="max-width: 28rem;">
-       <h5 class="card-header">
-           OCR
-       </h5>
+        <div class="card-header">
+          <p class="card-text text-right"><small class="text-muted">{{ nifi.ocr.start }}</small></p>
+          <h4 class="card-title">Processed Image</h4>
+        </div>
        <div class="card-body text-dark">
-         <p class="card-text text-right"><small class="text-muted">{{ nifi.ocr.start }}</small></p>
-         <p class="card-text text-left">{{ nifi.ocr.msg }}</p>
+         <h5 class="card-title">{{ nifi.ocr.msg }}</h5>
+         <p class="card-text text-left">Source Language: [{{ nifi.ocr.lang }}]</p>
        </div>
        {% if nifi.ocr_data.grid %}
        <div class="card-footer">
@@ -51,12 +54,12 @@
      <!--.card-->
      {% if nifi.route.msg %}
      <div class="card border-dark mb-3" style="max-width: 28rem;">
-       <h5 class="card-header">
-           ROUTE
-       </h5>
+        <div class="card-header">
+          <p class="card-text text-right"><small class="text-muted">{{ nifi.route.start }}</small></p>
+          <h4 class="card-title">Managed Route</h4>
+        </div>
        <div class="card-body text-dark">
-         <p class="card-text text-right"><small class="text-muted">{{ nifi.route.start }}</small></p>
-         <p class="card-text text-left">{{ nifi.route.msg }}</p>
+         <h5 class="card-title">{{ nifi.route.msg }}</h5>
        </div>
      </div>
      {% endif %}
@@ -64,18 +67,36 @@
      <!--.card-->
      {% if nifi.translate.msg %}
      <div class="card border-dark mb-3" style="max-width: 28rem;">
-        <h5 class="card-header">
-           TRANSLATION
-        </h5>
-        <div class="card-body text-dark">
+        <div class="card-header">
           <p class="card-text text-right"><small class="text-muted">{{ nifi.translate.start }}</small></p>
-          <p class="card-text text-left">{{ nifi.translate.msg }}</p>
+          <h4 class="card-title">Translated Text</h4>
+        </div>
+        <div class="card-body text-dark">
+          <h5 class="card-title">{{ nifi.translate.msg }}</h5>
+          <p class="card-text text-left">Model: [{{ nifi.model }}]</p>
+          <p class="card-text text-left">Source Language: [{{ nifi.sourceLanguage }}]</p>
+          <p class="card-text text-left">Target Language: [{{ nifi.targetLanguage }}]</p>
         </div>
         {% if nifi.translate_data.grid %}
         <div class="card-footer">
            <a href="{{ url_for('nifi.go_nifi_translate', uuid=nifi.uuid) }}" class="card-link">translation</a>
         </div>
         {% endif %}
+     </div>
+     {% endif %}
+
+     <!--.card-->
+     {% if nifi.metadata.msg %}
+     <div class="card border-dark mb-3" style="max-width: 28rem;">
+        <div class="card-header">
+          <p class="card-text text-right"><small class="text-muted">{{ nifi.metadata.start }}</small></p>
+          <h4 class="card-title">Extracted Summary and Keywords</h4>
+        </div>
+        <div class="card-body text-dark">
+          <h5 class="card-title">{{ nifi.metadata.msg }}</h5>
+          <p class="card-text text-left">Summary: [{{ nifi.metadata.summary }}]</p>
+          <p class="card-text text-left">Keywords: [{{ nifi.metadata.keywords }}]</p>
+        </div>
      </div>
      {% endif %}
 

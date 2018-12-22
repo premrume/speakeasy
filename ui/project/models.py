@@ -9,6 +9,7 @@ class Input(db.EmbeddedDocument):
     filename = db.StringField()
     trigger = db.StringField()
     path =  db.StringField()
+    fileSize =  db.StringField()
 
 
 class Input_data(db.EmbeddedDocument):
@@ -40,6 +41,7 @@ class Ocr(db.EmbeddedDocument):
     }
     msg = db.StringField()
     start = db.StringField()
+    lang = db.StringField()
 
 class Ocr_data(db.EmbeddedDocument):
     meta = {
@@ -71,6 +73,15 @@ class Route(db.EmbeddedDocument):
     msg = db.StringField()
     start = db.StringField()
 
+class Metadata(db.EmbeddedDocument):
+    meta = {
+      'strict' : False
+    }
+    msg = db.StringField()
+    start = db.StringField()
+    summary = db.StringField()
+    keywords = db.StringField()
+
 class Nifi(db.Document):
     meta = {
       'strict' : False
@@ -78,6 +89,8 @@ class Nifi(db.Document):
     uuid = db.StringField()
     source = db.StringField()
     model = db.StringField()
+    sourceLanguage = db.StringField()
+    targetLanguage = db.StringField()
     state = db.StringField()
     result = db.StringField()
     input = db.EmbeddedDocumentField(Input)
@@ -89,6 +102,7 @@ class Nifi(db.Document):
     clean_data = db.EmbeddedDocumentField(Clean_data)
     complete = db.EmbeddedDocumentField(Complete)
     route = db.EmbeddedDocumentField(Route)
+    metadata = db.EmbeddedDocumentField(Metadata)
 
 ####################################3
 #  NIFI does NOT ROCK.

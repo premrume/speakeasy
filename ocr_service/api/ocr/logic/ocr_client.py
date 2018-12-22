@@ -4,8 +4,12 @@ import logging
 import cv2
 import pytesseract
 from PIL import Image
+from summa import summarizer, keywords
+import json
 
 log = logging.getLogger(__name__)
+
+# TODO: make these string and not files ... durh
 
 def make_clean_image(path):
     image=cv2.imread(path)
@@ -26,4 +30,35 @@ def make_ocr_file(path, lang='eng'):
     outfile.write(data)
     outfile.close()
     answer = {'tesseract' : tmpname }
+    return answer
+
+def keyword_json(list):
+    lst = []
+    for pn in list:
+        d = {}
+        d['keyword']=pn
+        lst.append(d)
+    return json.dumps(lst)
+
+def make_keywords(path,language):
+    try:
+      with open(path) as f:
+        input_txt = f.read()
+      #keyword_list=keywords.keywords(input_txt, split=True, language=language, ratio=0.2)
+      keyword_list=keywords.keywords(input_txt, split=False, language=language, ratio=0.2)
+    except Exception as e:
+        raise
+    # for the time being (because Nifi sucs), lets make this a string
+    #answer = {'keywords' : keyword_json(keyword_list) }
+    answer = {'keywords' : keyword_list.replace('\n', ', ') }
+    return answer
+
+def make_summary(path,language):
+    try:
+      with open(path) as f:
+        input_txt = f.read()
+        summary=summarizer.summarize(input_txt,ratio=0.2, language=language)
+    except Exception as e:
+        raise
+    answer = {'summary' : summary.replace('\n',' ') }
     return answer
