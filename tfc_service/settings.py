@@ -16,4 +16,7 @@ DEFAULT_TF_SERVER_PORT = 8500
 # Things that make you go hmm... 
 DEFAULT_ENDE_MODEL_NAME = 'ende'
 DEFAULT_ENDE_MODEL_SIGNATURE_NAME = 'serving_default'
-DEFAULT_ENDE_MODEL_SENTENCE_PIECE = '/home/me/c/OpenNMT-tf/examples/serving/ende/1539080952/assets.extra/wmtende.model'
+DEFAULT_ENDE_MODEL_SENTENCE_PIECE = '/var/speakeasy/models/ende/1539080952/assets.extra/wmtende.model'
+
+DEFAULT_KOR_MODEL_NAME = 'kor'
+DEFAULT_KOR_MODEL_SIGNATURE_NAME = 'serving_default'

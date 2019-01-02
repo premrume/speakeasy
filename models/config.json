@@ -1,0 +1,12 @@
+{
+	"version": "9",
+	"hosts": {
+		"sofwerx": {
+			"url": "https://your url",
+			"accessKey": "your accessKey",
+			"secretKey": "youru secretKey",
+			"api": "S3v2",
+			"lookup": "auto"
+		}
+	}
+}

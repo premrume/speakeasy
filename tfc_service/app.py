@@ -7,6 +7,7 @@ from flask_restplus import Resource, Api
 
 from api.restplus import api
 from api.ende.endpoints.client import ns as ende_client_namespace
+from api.kor.endpoints.client import ns as kor_client_namespace
 
 # create Flask application
 application = Flask(__name__)
@@ -52,6 +53,7 @@ def initialize_app(flask_app):
     configure_app(flask_app)
     api.init_app(blueprint)
     api.add_namespace(ende_client_namespace)
+    api.add_namespace(kor_client_namespace)
 
     flask_app.register_blueprint(blueprint)
 

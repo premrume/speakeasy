@@ -3,15 +3,13 @@
 ## *What is Speakeasy*
 > Investment/POC to Translate text files containing Korean Language to English.
 
-> Walk Walk (V0.3)
->> Dataflow to pull in a text file and translate using existing translation model.  
+> Walk (V1.0)
 >> Focus on the data flow
->> This is based on the "toy-ende" model which uses german translation.
->> "Hooks for Korean"
->> Version V0.1 used Postgres - V0.2 swappted to MONGODB - V0.3 still suffering with MongoDB.
->> Added pytess ocr_client to the mix... kinda works for jpg/png files only.
 
 ![](slide1.jpg)
+
+## PREREQs 
+!!!! ./models/config.json needs YOUR access keys!
 
 ## PREREQs on VM (these steps are REQUIRED):
 Install tools per your operating system instructions.  (Installation steps are outside the scope of Speakeasy.)
@@ -82,7 +80,7 @@ make
 * This is a POC, not a prototype 
 * There are too many moving parts "services" for this to be a "desktop" (disconnected) application  
 * Root cause of the "too many moving parts" is the requirement to use Tensorflow Serving and NIFI
-* Before going to V0.4 - consider the persona - is this desktop or enterprise solution?   Need feedback.
+* Before going to prototype - consider the persona - is this desktop or enterprise solution?   Need feedback.
 
 ## Notes about NIFI:  (TODO)
 * The current Nifi version is not mongodb-production-ready, I have patches and workarounds because of this... it very time consuming... 
@@ -90,4 +88,5 @@ make
 This worked okay when storing files on disk, but for V0.4, might want to serialize given the fsgrid
 
 ## Notes about TF CLIENT:
-* The current Version only accesses ENDE; it is tuned to OpenNMT framework !!!
+* The current Version accesses ENDE; it is tuned to OpenNMT framework !!!
+* The current Version also accesses KOR; it is tuned to OpenNMT framework !!!
