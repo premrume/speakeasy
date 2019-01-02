@@ -149,7 +149,7 @@ def make_prediction(input_data):
     tokenizer = __setup_tokenizer()
     # get TensorFlow server connection parameters
     server_name, server_port = __get_tf_server_connection_params__()
-    log.info('Connecting to TensorFlow server %s:%s', server_name, server_port)
+    log.debug('Connecting to TensorFlow server %s:%s', server_name, server_port)
 
     # open channel to tensorflow server
     stub = __open_tf_server_channel__(server_name, server_port)
