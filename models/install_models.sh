@@ -17,12 +17,12 @@ install_ende
 if [ ${?} -ne 0 ] 
 then
   echo "FAILURE on ende install"
-  return 99
+  exit 99
 fi
 
 install_kor
 if [ ${?} -ne 0 ] 
 then
   echo "FAILURE on kor install"
-  return 99
+  exit 99
 fi
