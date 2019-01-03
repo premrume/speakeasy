@@ -16,7 +16,7 @@ cp -r /models /var/speakeasy/
 cd /var/speakeasy/models
 
 if [ -n "${SPEAKEASY_MINIO_URL}" ]; then
-  cat <<EOF > models/config.json
+  cat <<EOF > config.json
 {
 	"version": "9",
 	"hosts": {
