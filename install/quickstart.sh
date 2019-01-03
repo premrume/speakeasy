@@ -13,6 +13,7 @@ mkdir -p /var/speakeasy/models
 ###########################################
 # Install models
 cp -r /models /var/speakeasy/
+cd /var/speakeasy/models
 
 if [ -n "${SPEAKEASY_MINIO_URL}" ]; then
   cat <<EOF > models/config.json
