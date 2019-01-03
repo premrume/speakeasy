@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 install_ende() {
   # quick check for the folder
@@ -17,6 +17,6 @@ install_ende() {
     return 0 
   else
     echo "   skipping download, looks like you already have an ende folder"
-    return 99 
+    return 0
   fi
 }

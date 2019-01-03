@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 install_kor() {
   # quick check for the folder
@@ -13,6 +13,6 @@ install_kor() {
     return 0 
   else
     echo "   skipping download, looks like you already have an kor folder"
-    return 99 
+    return 0
   fi
 }

@@ -1,5 +1,4 @@
-#!/bin/bash -ex
-env | grep SPEAKEASY
+#!/bin/bash -e
 
 ###########################################
 # Create sub-folders
