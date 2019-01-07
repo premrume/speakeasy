@@ -9,3 +9,6 @@ COPY --chown=nifi:nifi flow.xml.gz /opt/nifi/nifi-current/conf/
 COPY --chown=nifi:nifi ./nar/*  /opt/nifi/nifi-current/lib/
 COPY --chown=nifi:nifi ./nifi-env.sh  /opt/nifi/nifi-current/bin/
 COPY --chown=nifi:nifi ./bootstrap.conf  /opt/nifi/nifi-current/conf/
+ADD run.sh /run.sh
+
+ENTRYPOINT /run.sh
