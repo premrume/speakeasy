@@ -18,6 +18,9 @@ services:
       - file_share:/var/speakeasy
       - models:/var/speakeasy/models
     environment:
+      SPEAKEASY_MINIO_URL: ${SPEAKEASY_MINIO_URL}
+      SPEAKEASY_MINIO_ACCESS_KEY: ${SPEAKEASY_MINIO_ACCESS_KEY}
+      SPEAKEASY_MINIO_SECRET_KEY: ${SPEAKEASY_MINIO_SECRET_KEY}
       SPEAKEASY_SHARED: ${SPEAKEASY_SHARED}
       SPEAKEASY_VERSION: ${SPEAKEASY_VERSION}
 
@@ -26,13 +29,14 @@ services:
     image: speakeasy/ui:v${SPEAKEASY_VERSION}
     depends_on:
       - mongo
+      - install
     build: ./ui
     restart: always
     environment:
       - FLASK_SERVER_NAME=0.0.0.0
       - FLASK_SERVER_PORT=5000
-      - FLASK_DEBUG=1
-      - FLASK_ENV=development
+      - FLASK_DEBUG=0
+      - FLASK_ENV=production
       - MONGO_EXPRESS=http://0.0.0.0:8071/
       - MONGO_CONNECT=mongodb://speakeasy:Speakeasy123@mongo/speakeasy?authSource=admin
       - OCR_SERVICE=http://0.0.0.0:5010/poc_api/
@@ -50,6 +54,8 @@ services:
     image: speakeasy/mongo:v${SPEAKEASY_VERSION}
     restart: always
     build: ./mongo
+    depends_on:
+      - install
     networks:
       - speakeasy
     environment:
@@ -79,6 +85,8 @@ services:
   tfs_service:
     container_name: tfs_service  
     image: speakeasy/tfs_service:v${SPEAKEASY_VERSION}
+    depends_on:
+      - install
     networks:
       - speakeasy
     ports:
@@ -106,7 +114,8 @@ services:
     environment:
       - FLASK_SERVER_NAME=0.0.0.0
       - FLASK_SERVER_PORT=5020
-      - FLASK_DEBUG=1
+      - FLASK_DEBUG=0
+      - FLASK_ENV=production
       - TF_SERVER_NAME=tfs_service
       - TF_SERVER_PORT=8500
       - ENDE_MODEL_SENTENCE_PIECE=/models/ende/1539080952/assets.extra/wmtende.model
@@ -118,7 +127,7 @@ services:
     image: speakeasy/nifi_service:v${SPEAKEASY_VERSION}
     build: ./nifi_service
     depends_on:
-      - tfs_service
+      - install
     environment:
       - MONGO_CONNECT=mongodb://speakeasy:Speakeasy123@mongo/speakeasy?authSource=admin
       - TFC_SERVICE=http://tfc_service:5020/poc_api
@@ -142,6 +151,8 @@ services:
   ocr_service:
     container_name: ocr_service  
     image: speakeasy/ocr_service:v${SPEAKEASY_VERSION}
+    depends_on:
+      - install
     networks:
       - speakeasy
     ports:
@@ -154,7 +165,27 @@ services:
     environment:
       - FLASK_SERVER_NAME=0.0.0.0
       - FLASK_SERVER_PORT=5010
-      - FLASK_DEBUG=1
+      - FLASK_DEBUG=0
+      - FLASK_ENV=production
+
+  enko_service:
+    container_name: enko_service  
+    image: speakeasy/enko_service:v${SPEAKEASY_VERSION}
+    depends_on:
+      - install
+    networks:
+      - speakeasy
+    ports:
+      - "5030:5030"
+    build: ./enko_service
+    restart: always
+    volumes:
+      - models:/var/speakeasy/models
+    environment:
+      - FLASK_SERVER_NAME=0.0.0.0
+      - FLASK_SERVER_PORT=5030
+      - FLASK_DEBUG=0
+      - FLASK_ENV=production
 
 volumes:
   nifi_datafiles:
@@ -163,22 +194,10 @@ volumes:
   nifi_data:
   mongodb:
     driver: local
-#    driver_opts:
-#      o: bind
-#      type: none
-#      device: ${SPEAKEASY_SHARED}/mongodb
   models:
     driver: local
-#    driver_opts:
-#      o: bind
-#      type: none
-#      device: ${SPEAKEASY_SHARED}/models
   file_share:
     driver: local
-#    driver_opts:
-#      o: bind
-#      type: none
-#      device: ${SPEAKEASY_SHARED}
 
 networks:
   speakeasy:

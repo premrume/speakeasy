@@ -17,6 +17,7 @@ fi
 
 . ./install_ende.sh
 . ./install_kor.sh
+. ./install_enko.sh
 
 install_ende
 if [ ${?} -ne 0 ] 
@@ -29,5 +30,12 @@ install_kor
 if [ ${?} -ne 0 ] 
 then
   echo "FAILURE on kor install"
+  exit 99
+fi
+
+install_enko
+if [ ${?} -ne 0 ] 
+then
+  echo "FAILURE on enko install"
   exit 99
 fi
