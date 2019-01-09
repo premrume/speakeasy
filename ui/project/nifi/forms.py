@@ -15,8 +15,9 @@ class AddNifiForm(FlaskForm):
     model = SelectField(
        u'Select Translation Model', 
        choices=[
-         ('ende', 'ende - English to German'), 
-         ('kor', 'kor - Korean to English')
+         ('kor', 'kor - Korean to English'),
+         ('enko', 'enko - English to Korean'),
+         ('ende', 'ende - English to German') 
        ]
     )
     submit = SubmitField(u'Submit')

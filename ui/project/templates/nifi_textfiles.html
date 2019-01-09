@@ -4,52 +4,52 @@
 {% block content %}
 <hr>
 
-  <div class="container" id="equal-card-decks">
-    <p class="text-right text-muted">** CONCEPT **</p>
-    <h3 class="text-left">Verify Text Translation</h3>
+  <!--.container-->
+  <div class="container-fluid" id="equal-card-decks">
+    <h3 class="text-left">Compare: {{ nifi.source }} </h3>
 
     <!--.card deck -->
     <div class="card-deck">
+
       <!--.card-->
       <div class="card border-dark mb-3" style="max-width: 28rem;">
-        <h5 class="card-header">
-           Uploaded Text
-        </h5>
+        <h5 class="card-header">Uploaded Text</h5>
+        <div class="card-body text-dark">
+          <div class="md-form"> 
+            <textarea readonly type="text" class="md-textarea form-control" rows="12"> {{ input_display }} </textarea> 
+          </div>
+        </div>
+      </div>
+
+      <!--.card-->
+      <div class="card border-dark mb-3" style="max-width: 28rem;">
+        <h5 class="card-header">Translated Text</h5>
         <div class="card-body text-dark">
           <div class="md-form">
-             <textarea readonly type="text" class="md-textarea form-control" rows="12"> {{ input_display }} </textarea>
-          </div>
-      </div>
-    </div>
-
-    <div class="card border-dark mb-3" style="max-width: 28rem;">
-      <h5 class="card-header">
-           Translated Text
-      </h5>
-      <div class="card-body text-dark">
-        <div class="md-form">
            <textarea readonly type="text" class="md-textarea form-control" rows="12"> {{ output_display }} </textarea>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="card border-dark mb-3" style="max-width: 28rem;">
-      <h5 class="card-header">
-          Validate Text
-      </h5>
-      <div class="card-body text-dark">
-        <div class="md-form">
+      <!--.card-->
+      <div class="card border-dark mb-3" style="max-width: 28rem;">
+        <h5 class="card-header"> Modify Translated Text</h5>
+        <div class="card-body text-dark">
+          <div class="md-form">
            <textarea type="text" class="md-textarea form-control" rows="12"> {{ output_display }} </textarea>
+          </div>
+        </div>
+        <div class="card-footer text-muted">
+          ** FUTURE ENHANCEMENT :  Allow user to correct the translated text and save **
         </div>
       </div>
-      <div class="card-footer">
-        <h5 class="card-header">
-          ** FUTURE :  Allow user to update and save text to improve the corpus for the machine language translation cycle **
-        </h5>
-      </div>
 
+    <!--.card deck -->
     </div>
+
+  <!--.container-->
   </div>
+
   <a href="{{ url_for('nifi.go_nifi_list') }}" class="btn btn-sm btn-primary">Home</a>
 </hr>
 

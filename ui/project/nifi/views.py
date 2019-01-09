@@ -8,7 +8,7 @@ import os
 from flask import Blueprint, Flask, redirect, render_template, request, session, url_for, flash, send_file
 from flask_paginate import Pagination, get_page_args
 from werkzeug.utils import secure_filename
-from project import db, ende, kor, app
+from project import db, app, enko, kor, ende
 from project.models import *
 from .forms import AddNifiForm
 
@@ -56,8 +56,11 @@ def go_nifi_upload():
                filename = secure_filename(f.filename)
                if model == 'ende':
                  saved = ende.save(f, name=filename)
-               else:
+               elif model == 'kor':
                  saved = kor.save(f, name=filename)
+               else:
+                 saved = enko.save(f, name=filename)
+
                flash('SUCCESS: Model [{}] File(s) [{}] posted'.format(model, filename), 'success')
 
              return redirect(url_for('nifi.go_nifi_upload'))
@@ -128,7 +131,7 @@ def go_nifi_input_other(uuid):
 
     output_file = nifi.translate_data.payload.read()
     output_display = str(output_file, 'UTF-8')
-    return render_template('nifi_textfiles.html', input_display=input_display, output_display=output_display)
+    return render_template('nifi_textfiles.html', nifi=nifi, input_display=input_display, output_display=output_display)
 
 @nifi_blueprint.route('/translate/<uuid>', methods=['GET'])
 def go_nifi_translate(uuid):
@@ -143,62 +146,3 @@ def go_nifi_clean(uuid):
 def go_nifi_ocr(uuid):
     nifi = Nifi.objects.get(uuid=uuid)
     return send_file(nifi.ocr_data.payload, mimetype=nifi.ocr_data.context_type)
-
-
-@nifi_blueprint.route('/h2/', methods=['GET','POST'])
-def h2():
-
-    names = ''
-    form = AddNifiForm()
-    if request.method == 'POST':
-        try:
-         if form.validate_on_submit():
-             model = form.model.data
-             for key, f in request.files.items():
-               if key.startswith('file'):
-                 filename = secure_filename(f.filename)
-                 if names == '':
-                   names = names + filename
-                 else:
-                   names = names + ', ' + filename
-
-                 if model == 'ende':
-                   saved = ende.save(f, name=filename)
-                 else:
-                   saved = kor.save(f, name=filename)
-
-             flash('SUCCESS: Model [{}] File(s) [{}] posted'.format(model, names), 'success')
-             return redirect(url_for('nifi.h2'))
-
-         else:
-             flash('ERROR: try entering filename again', 'error')
-
-        except Exception as e:
-             msg = 'UPLOAD ERROR: [' + filename + "]" + getattr(e, 'message', repr(e))
-             flash(msg, 'error')
-
-    return render_template('h2.html', form=form, dropzone=dropzone)
-
-@nifi_blueprint.route('/hailmary/', methods=['GET','POST'])
-def hailmary():
-    names = ''
-    if request.method == 'POST':
-      try:
-        for key, f in request.files.items():
-          if key.startswith('file'):
-            filename = secure_filename(f.filename)
-            if names == '':
-              names = names + filename
-            else:
-              names = names + ', ' + filename
-            saved = ende.save(f, name=filename)
-            flash('SUCCESS: Model [{}] File(s) [{}] posted'.format(model, names), 'success')
-            return redirect(url_for('nifi.hailmary'))
-          else:
-            flash('ERROR: try entering filename again', 'error')
-
-      except Exception as e:
-        msg = 'UPLOAD ERROR: [' + filename + "]" + getattr(e, 'message', repr(e))
-        flash(msg, 'error')
-
-    return render_template('hailmary.html')

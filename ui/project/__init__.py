@@ -22,8 +22,10 @@ db.init_app(app)
 ################
 ende = UploadSet('ende', IMAGES + TEXT)
 kor = UploadSet('kor', IMAGES + TEXT)
+enko = UploadSet('enko', IMAGES + TEXT)
 configure_uploads(app, ende)
 configure_uploads(app, kor)
+configure_uploads(app, enko)
 
 ####################
 #### blueprints ####

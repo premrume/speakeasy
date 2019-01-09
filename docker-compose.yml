@@ -41,6 +41,7 @@ services:
       - MONGO_CONNECT=mongodb://speakeasy:Speakeasy123@mongo/speakeasy?authSource=admin
       - OCR_SERVICE=http://0.0.0.0:5010/poc_api/
       - TFC_SERVICE=http://0.0.0.0:5020/poc_api/
+      - ENKO_SERVICE=http://0.0.0.0:5030/poc_api/
       - NIFI_SERVICE=http://0.0.0.0:8080/nifi/
     ports:
       - "5000:5000"
