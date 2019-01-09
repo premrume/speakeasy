@@ -107,6 +107,7 @@ def go_nifi_info():
       TF_CLIENT=app.config['TF_CLIENT'],
       OCR_CLIENT=app.config['OCR_CLIENT'],
       NIFI_CLIENT=app.config['NIFI_CLIENT'])
+      ENKO_CLIENT=app.config['ENKO_CLIENT'])
 
 ########################################
 # It is what it is... 
