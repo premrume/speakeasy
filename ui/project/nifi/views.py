@@ -106,7 +106,7 @@ def go_nifi_info():
       MONGO_EXPRESS=app.config['MONGO_EXPRESS'],
       TF_CLIENT=app.config['TF_CLIENT'],
       OCR_CLIENT=app.config['OCR_CLIENT'],
-      NIFI_CLIENT=app.config['NIFI_CLIENT'])
+      NIFI_CLIENT=app.config['NIFI_CLIENT'],
       ENKO_CLIENT=app.config['ENKO_CLIENT'])
 
 ########################################

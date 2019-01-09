@@ -96,13 +96,19 @@ class EndeNifi(Resource):
             input_json = api.payload
             input_text = input_json['content']
             input_list = sent_tokenize(input_text)
+            # BOM: windows notepad is nothing less than annoying
+            input_text.replace(u'\ufeff','')
 
         except Exception as inst:
             return {'message': 'something wrong with incoming request. ' +
                                'Original message: {}'.format(inst)}, 400
         try:
             # this is a MESS!  Do what you gotta do to get it done...
-            results = make_prediction(input_list)
+            # BOM: don't bother with a blank line
+            if input_text.length() != 0:
+              results = make_prediction(input_list)
+            else:
+              results = ''
             json_string = json.dumps(results,ensure_ascii = False)
             response = Response(json_string,content_type="application/json; charset=utf-8" )
             return response
