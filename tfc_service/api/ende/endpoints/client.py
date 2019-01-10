@@ -105,10 +105,7 @@ class EndeNifi(Resource):
         try:
             # this is a MESS!  Do what you gotta do to get it done...
             # BOM: don't bother with a blank line
-            if input_text.length() != 0:
-              results = make_prediction(input_list)
-            else:
-              results = ''
+            results = make_prediction(input_list)
             json_string = json.dumps(results,ensure_ascii = False)
             response = Response(json_string,content_type="application/json; charset=utf-8" )
             return response

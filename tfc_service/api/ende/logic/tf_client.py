@@ -152,6 +152,13 @@ def make_prediction(input_data):
     :param input_data: list inputs for prediction
     :return: List of tuples ugh.
     '''
+
+
+    # bail if this is an empty string
+    if len(input_data) < 1:
+      empty = {'input_text' : input_data, 'output_text': input_data }
+      return empty
+    
     tokenizer = __setup_tokenizer()
     # get TensorFlow server connection parameters
     server_name, server_port = __get_tf_server_connection_params__()

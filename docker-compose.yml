@@ -132,6 +132,7 @@ services:
     environment:
       - MONGO_CONNECT=mongodb://speakeasy:Speakeasy123@mongo/speakeasy?authSource=admin
       - TFC_SERVICE=http://tfc_service:5020/poc_api
+      - ENKO_SERVICE=http://enko_service:5030/poc_api
       - OCR_SERVICE_CLEAN=http://ocr_service:5010/poc_api/ocr_client/clean
       - OCR_SERVICE_KEYWORD=http://ocr_service:5010/poc_api/ocr_client/keyword
       - OCR_SERVICE_SUMMARY=http://ocr_service:5010/poc_api/ocr_client/summary
