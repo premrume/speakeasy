@@ -20,10 +20,16 @@ devk:
 
 devd:
 	@echo Stop and remove the container for ${foo}
-	docker-compose stop ${foo}
-	docker-compose rm ${foo}
+	docker-compose rm --force --stop ${foo}
 
 devu:
-	@echo Build  and Run (in the forground) the container for ${foo} 
+	@echo Build  and Run in the forground the container for ${foo} 
+	docker-compose build ${foo}
+	docker-compose up ${foo}
+
+devi:
+	@echo Stop and remove the container for ${foo}
+	docker-compose rm --force --stop ${foo}
+	@echo Build  and Run in the forground the container for ${foo} 
 	docker-compose build ${foo}
 	docker-compose up ${foo}
