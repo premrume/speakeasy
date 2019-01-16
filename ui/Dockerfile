@@ -7,7 +7,6 @@ RUN \
 
 # Depends on volume (refer to ../docker-compose.yml) /models
 LABEL \
- version="0.1" \
  description="UI UI"
 
 #  As ROOT
@@ -25,7 +24,15 @@ WORKDIR /var/ui
 COPY . /var/ui
 
 ENV PATH "$PATH:/home/flask/.local/bin"
-RUN pip install --user --no-cache-dir -r requirements.txt
+ENV FLASK_APP "dashapp"
+ENV SECRET_KEY "pita"
+ENV DATABASE_URL "sqlite:////var/ui//app.db"
+
+RUN \ 
+  pip install --user --no-cache-dir -r requirements.txt \
+  && flask db init \
+  && flask db migrate -m "init" \
+  && flask db upgrade
 
 ENTRYPOINT ["python"]
-CMD ["run.py"]
+CMD ["dashapp.py"]

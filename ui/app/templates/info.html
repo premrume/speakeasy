@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+{% from "_form_macros.html" import render_field %}
+
+{% block content %}
+
+<hr>
+<div class="container-fluid" id="equal-card-decks">
+
+  <div class="card-deck">
+
+    <!--.card-->
+    <div class="card border-dark mb-3">
+        <div class="card-header">
+          <h4 class="card-title">Project</h4>
+        </div>
+
+      <div class="card-body text-dark"> 
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Sponsored by Booz Allen Hamilton</li>
+            <li class="list-group-item">Tampa Machine Learning (c) 2018-2019</li>
+            <li class="list-group-item">Contact: Tim Epping (epping_timothy@bah.com)</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="card border-dark mb-3">
+        <div class="card-header">
+          <h4 class="card-title">Links</h4>
+        </div>
+        <div class="card-body text-dark"> 
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Nifi User Interface: <a href="{{ NIFI_CLIENT }}" title="Nifi Interface">Nifi</a></li>
+            <li class="list-group-item">Mongo User Iterface: <a href={{ MONGO_EXPRESS }} title="Mongo Express for Speakeasy">Mongo Express</a></li>
+            <li class="list-group-item">Swagger for Korean to English: <a href={{ TF_CLIENT }} title="TF Client to KOR vi Tensorflow Serving">KOR Swagger</a></li>
+            <li class="list-group-item">Swagger for English to German: <a href={{ TF_CLIENT }} title="TF Client to ENDE via Tensorflow Serving">ENDE Swagger</a></li>
+            <li class="list-group-item">Swagger for English to Korean: <a href={{ ENKO_CLIENT }} title="ENKO Client">ENKO Swagger</a></li>
+            <li class="list-group-item">OCR Client Swagger: <a href={{ OCR_CLIENT }} title="OCR and OpenCV Client">OCR Swagger</a></li>
+            <li class="list-group-item">3rd Party Credits: Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a> </li>
+          </ul>
+        </div>
+    </div>
+
+    <div class="card border-dark mb-3">
+      <div class="card-header">
+        <h4 class="card-title">Version</h4>
+      </div>
+      <div class="card-body text-dark"> 
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Proof of Concept</li>
+            <li class="list-group-item">Bride of Frankenstein</li>
+            <li class="list-group-item">
+              <img class="card-img" src="/static/image/bride.png" style="width: 64px;" alt="Card image cap">
+              <img class="card-img" src="/static/image/frank64.png" style="width: 64px;" alt="Card image cap">
+            </li>
+        </ul>
+      </div>
+    </div>
+
+  <!--.card deck-->
+  </div>
+
+  <a href="{{ url_for('nifi.go_nifi_list') }}" class="btn btn-sm btn-primary">Home</a>
+
+</div>
+<hr>
+
+{% endblock %}

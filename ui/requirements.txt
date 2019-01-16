@@ -1,5 +1,13 @@
 Flask
-Flask-Uploads
-Flask-WTF
-Flask-mongoengine
-Flask-paginate
+gunicorn
+dash
+dash-core-components
+dash-html-components
+pandas-datareader
+flask-sqlalchemy
+flask-migrate
+flask-login
+flask-wtf
+flask-mongoengine
+flask-uploads
+flask-paginate

@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% from "_form_macros.html" import render_field %}
+
+{% block content %}
+
+<hr>
+<div class="container-fluid" id="equal-card-decks">
+  <!--.card deck -->
+  <div class="card-deck">
+     <!--.card -->
+     <div class="card border-dark mb-3">
+        <div class="card-header">
+          <h5 class="card-title">Sign In</h5>
+        </div>
+     <div class="card-body text-dark">
+       <form action="" method="post" novalidate>
+         {{ form.hidden_tag() }}
+         <p>
+           {{ form.username.label }}<br>
+           {{ form.username(size=32) }}<br>
+         </p>
+         <p>
+           {{ form.password.label }}<br>
+           {{ form.password(size=32) }}<br>
+         </p>
+         <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+         <p>{{ form.submit() }}</p>
+
+         {% if error %}
+            <p class="error"><strong>Error:</strong> {{ error }}
+         {% endif %}
+       </form>
+     </div>
+     <div class="card-footer text-muted">
+         Proof-of-concept : light level of authentication  
+     </div>
+     <!--.card -->
+     </div>
+
+    <!--.card deck -->
+    </div>
+
+  <p> New User? <a href="{{ url_for('main.register') }}">Click here to Register</a></p>
+
+</div>
+
+</hr>
+{% endblock %}
