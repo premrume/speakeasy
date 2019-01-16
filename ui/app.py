@@ -58,7 +58,7 @@ def onLoad_lang_model_options():
     return lang_model_options
 
 
-def create_shit(server):
+def create_dash(server):
     dashapp = dash.Dash(__name__, server=server, url_base_pathname='/dashboard/')
     dashapp.css.append_css({
         "external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"
@@ -114,9 +114,9 @@ def create_shit(server):
 
 if __name__ == "__main__":
    server = create_app()
-   MONGO_CONNECT='mongodb://speakeasy:ua8Loo5ux8sax8T@speakeasy-mongo.supermicro5.opswerx.org:65017/speakeasy?authSource=admin'
+   MONGO_CONNECT = get_env_var_setting('MONGO_CONNECT', 'youloose')
    db = MongoClient(MONGO_CONNECT).get_database()
    nifi_collection = db.nifi
-   dashapp = create_shit(server)
+   dashapp = create_dash(server)
    server_name, server_port, flask_debug = utils.get_flask_server_params()
    server.run(debug=flask_debug, host=server_name, port=server_port)
