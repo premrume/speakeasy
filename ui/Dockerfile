@@ -24,9 +24,6 @@ WORKDIR /var/ui
 COPY . /var/ui
 
 ENV PATH "$PATH:/home/flask/.local/bin"
-ENV FLASK_APP "dashapp"
-ENV SECRET_KEY "pita"
-ENV DATABASE_URL "sqlite:////var/ui//app.db"
 
 RUN \ 
   pip install --user --no-cache-dir -r requirements.txt \
@@ -35,4 +32,4 @@ RUN \
   && flask db upgrade
 
 ENTRYPOINT ["python"]
-CMD ["dashapp.py"]
+CMD ["app.py"]

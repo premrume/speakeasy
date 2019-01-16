@@ -1,18 +1,15 @@
-
 from flask import Flask
-
-from config import BaseConfig
 
 
 def create_app():
 
     server = Flask(__name__, instance_relative_config=True)
 
-    config_main(server)
+    config(server)
+
     register_extensions_main(server)
     register_blueprints_main(server)
 
-    config_nifi(server)
     register_extensions_nifi(server)
     register_blueprints_nifi(server)
  
@@ -20,8 +17,8 @@ def create_app():
 
     return server
 
-def config_main(server):
-    server.config.from_object(BaseConfig)
+def config(server):
+    server.config.from_pyfile('flask.cfg')
 
 def register_extensions_main(server):
     from app.extensions import db
@@ -36,9 +33,6 @@ def register_extensions_main(server):
 def register_blueprints_main(server):
     from app.main.webapp import server_bp
     server.register_blueprint(server_bp)
-
-def config_nifi(server):
-    server.config.from_pyfile('flask.cfg')
 
 def register_extensions_nifi(server):
     from app.extensions import dbm, ende, kor, enko

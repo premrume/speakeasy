@@ -9,9 +9,7 @@ from dash.dependencies import Output
 from flask_login import login_required
 
 import utils
-
 from app import create_app
-
 
 def protect_dashviews(dashapp):
     for view_func in dashapp.server.view_functions:
@@ -19,6 +17,7 @@ def protect_dashviews(dashapp):
             dashapp.server.view_functions[view_func] = login_required(dashapp.server.view_functions[view_func])
 
 
+# Login and Upload app:
 server = create_app()
 
 # =============================
@@ -62,4 +61,3 @@ def update_graph(selected_dropdown_value):
 if __name__ == "__main__":
    server_name, server_port, flask_debug = utils.get_flask_server_params()
    server.run(debug=flask_debug, host=server_name, port=server_port)
-   #server.run(debug=flask_debug)

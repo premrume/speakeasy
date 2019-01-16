@@ -12,3 +12,18 @@ clean:
 mrproper:
 	docker volume rm $$(docker volume ls -q | grep speakeasy)
 
+devk:
+	@echo Killing all containers, images and volumes in this compose-file
+	docker-compose down --rmi all --volumes
+	@echo Killing any leftovers
+	docker rmi $$(docker images -q --filter "dangling=true")
+
+devd:
+	@echo Stop and remove the container for ${foo}
+	docker-compose stop ${foo}
+	docker-compose rm ${foo}
+
+devu:
+	@echo Build  and Run (in the forground) the container for ${foo} 
+	docker-compose build ${foo}
+	docker-compose up ${foo}
