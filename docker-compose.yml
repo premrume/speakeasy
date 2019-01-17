@@ -47,7 +47,6 @@ services:
       - "5000:5000"
     volumes:
       - file_share:/var/speakeasy
-      - peggy:/var/ui
     networks:
       - speakeasy
 
@@ -200,8 +199,6 @@ volumes:
   models:
     driver: local
   file_share:
-    driver: local
-  peggy:
     driver: local
 
 networks:

@@ -1,6 +1,10 @@
 import utils
 from app import create_app
 
+import logging.config
+logging.config.fileConfig('logging.conf')
+log = logging.getLogger(__name__)
+
 import pymongo
 from pymongo import MongoClient
 import dash
@@ -19,9 +23,7 @@ import json
 
 def mongo_to_dataframe(mongo_data):
     sanitized = json.loads(json_util.dumps(mongo_data))
-    print(sanitized)
     normalized = json_normalize(sanitized)
-    print(normalized)
     df = pd.DataFrame(normalized)
     return df
 
@@ -114,7 +116,8 @@ def create_dash(server):
 
 if __name__ == "__main__":
    server = create_app()
-   MONGO_CONNECT = get_env_var_setting('MONGO_CONNECT', 'youloose')
+   MONGO_CONNECT = utils.get_env_var_setting('MONGO_CONNECT', 'youloose')
+   log.debug(MONGO_CONNECT)
    db = MongoClient(MONGO_CONNECT).get_database()
    nifi_collection = db.nifi
    dashapp = create_dash(server)

@@ -1,13 +1,10 @@
-#################
-#### imports ####
-#################
-
 import os
 from flask import Blueprint, Flask, redirect, render_template, request, session, url_for, flash, send_file
 from flask_paginate import Pagination, get_page_args
 from werkzeug.utils import secure_filename
 from app.nifi.forms import AddNifiForm
 from app.nifi.models import * 
+from app.extensions import ende, kor, enko
 from flask import current_app
 from flask_login import login_required
 
