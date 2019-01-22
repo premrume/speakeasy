@@ -2,7 +2,6 @@ FROM tensorflow/serving
 
 # Info
 LABEL \
-      version="0.1" \
       description="Tensorflow Serving depends on models volume and models.conf"
 
 # Depends on volume (refer to ../docker-compose.yml) /models

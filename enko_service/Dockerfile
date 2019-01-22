@@ -6,8 +6,7 @@ RUN \
 
 # Depends on volume (refer to ../docker-compose.yml) /models
 LABEL \
-      version="0.1" \
-      description="Client depends on models volume"
+      description="ENKO service depends on models volume"
 
 # Speakeasy User and Group:
 RUN \
@@ -18,11 +17,6 @@ RUN \
   && pip install --upgrade pip 
 
 USER flask
-
-# And then...
-RUN \ 
-  pip3 install --user nltk \
-  && python3 -m nltk.downloader popular
 
 # Takes a long time, separated from requirements.txt
 WORKDIR /var/enko_server

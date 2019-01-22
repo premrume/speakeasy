@@ -7,6 +7,7 @@ mkdir -p /var/speakeasy/output
 mkdir -p /var/speakeasy/input
 mkdir -p /var/speakeasy/input/ende
 mkdir -p /var/speakeasy/input/kor
+mkdir -p /var/speakeasy/input/enko
 mkdir -p /var/speakeasy/models
 
 ###########################################

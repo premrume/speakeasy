@@ -145,7 +145,7 @@ def go_nifi_translate(uuid):
 @login_required
 def go_nifi_clean(uuid):
     nifi = Nifi.objects.get(uuid=uuid)
-    return send_file(nifi.ocr_data.payload, mimetype=nifi.ocr_data.context_type)
+    return send_file(nifi.clean_data.payload, mimetype=nifi.clean_data.context_type)
 @nifi_blueprint.route('/ocr/<uuid>', methods=['GET'])
 @login_required
 def go_nifi_ocr(uuid):

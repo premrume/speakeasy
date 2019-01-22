@@ -6,7 +6,6 @@ RUN \
 
 # Depends on volume (refer to ../docker-compose.yml) /models
 LABEL \
-      version="0.1" \
       description="Tensorflow Client depends on models volume"
 
 # Speakeasy User and Group:

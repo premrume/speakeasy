@@ -14,7 +14,6 @@ RUN apt-get update \
 
 # Depends on ...
 LABEL \
-      version="0.1" \
       description="Very limited OCR"
 
 # Speakeasy User and Group:

@@ -15,7 +15,8 @@ mrproper:
 devk:
 	@echo Killing all containers, images and volumes in this compose-file
 	docker-compose down --rmi all --volumes
-	@echo Killing any leftovers
+	@echo Killing any leftovers ... really killing them!!!
+	docker volume prune
 	docker rmi $$(docker images -q --filter "dangling=true")
 
 devd:

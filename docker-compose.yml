@@ -35,8 +35,8 @@ services:
     environment:
       - FLASK_SERVER_NAME=0.0.0.0
       - FLASK_SERVER_PORT=5000
-      - FLASK_DEBUG=1
-      - FLASK_ENV=development
+      - FLASK_DEBUG=0
+      - FLASK_ENV=production
       - MONGO_EXPRESS=http://0.0.0.0:8071/
       - MONGO_CONNECT=mongodb://speakeasy:Speakeasy123@mongo/speakeasy?authSource=admin
       - OCR_SERVICE=http://0.0.0.0:5010/poc_api/

@@ -10,6 +10,14 @@
 
 ## PREREQs 
 !!!! ./models/config.json needs YOUR access keys!
+> If  your .env does not have the right values ... this won't work!
+```
+SPEAKEASY_SHARED=/var/speakeasy
+SPEAKEASY_VERSION=1.07
+SPEAKEASY_MINIO_URL=          GO ASK PEGGY
+SPEAKEASY_MINIO_ACCESS_KEY=   GO ASK PEGGY
+SPEAKEASY_MINIO_SECRET_KEY=   GO ASK PEGGY
+```
 
 ## PREREQs on VM (these steps are REQUIRED):
 Install tools per your operating system instructions.  (Installation steps are outside the scope of Speakeasy.)
