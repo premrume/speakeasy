@@ -14,12 +14,18 @@ import dash
 from dash.dependencies import Input, Output
 import dash_core_components as dcc
 import dash_html_components as html
-import plotly.figure_factory as ff
+import dash_table_experiments as dt
 import plotly.graph_objs as go
 import pandas as pd
 from bson import json_util, ObjectId
 from pandas.io.json import json_normalize
 import json
+
+def mongo_to_dictionary(mongo_data):
+    sanitized = json.loads(json_util.dumps(mongo_data))
+    normalized = json_normalize(sanitized)
+    records = normalized.to_dict('records')
+    return records
 
 def mongo_to_dataframe(mongo_data):
     sanitized = json.loads(json_util.dumps(mongo_data))
@@ -27,97 +33,105 @@ def mongo_to_dataframe(mongo_data):
     df = pd.DataFrame(normalized)
     return df
 
-def get_lang_models():
-    cursor = nifi_collection.distinct( 'model' )
-    # this is stupid
-    lang_models = pd.DataFrame(cursor, columns = ['model'])
-    lang_models = list(lang_models['model'].sort_values(ascending=True))
-    return lang_models 
-
 # I dislike mongodb in yet another way.
-def get_match_results(lang_model):
+def get_match_results():
     cursor = nifi_collection.find(
-       { 'model': lang_model },{ '_id' : 0,'model': 1, 'state': 1, 'input.fileSize': 1, 'input.filename': 1 } 
+        {}, { '_id': 0, 'model': 1, 'result': 1, 'state': 1, 'input.filename': 1 }
     )
-    return mongo_to_dataframe(cursor)
-
-def generate_table(dataframe, max_rows=10):
-    return html.Table(
-        # Header
-        [html.Tr([html.Th(col) for col in dataframe.columns])] +
-
-        # Body
-        [html.Tr([
-            html.Td(dataframe.iloc[i][col]) for col in dataframe.columns
-        ]) for i in range(min(len(dataframe), max_rows))]
-    )
-
-def onLoad_lang_model_options():
-    lang_model_options = (
-        [{'label': model, 'value': model}
-         for model in get_lang_models()]
-    )
-    return lang_model_options
-
+    return mongo_to_dictionary(cursor)
 
 def create_dash(server):
     dashapp = dash.Dash(__name__, server=server, url_base_pathname='/dashboard/')
+
+    # todo bring this into the project
     dashapp.css.append_css({
         "external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"
     })
 
-    dashapp.layout = html.Div([
-
-    # Page Header
-    html.Div([
-        html.H1('Dashboard - Frankenstein Lives')
-    ]),
-
-    # Dropdown Grid
-    html.Div([
-        html.Div([
-            # Select Model Dropdown
-            html.Div([
-                html.Div('Select Language Model', className='three columns'),
-                html.Div(dcc.Dropdown(id='lang_model-selector',
-                                      options=onLoad_lang_model_options()),
-                         className='nine columns')
-            ])
-
-        ], className='six columns'),
-
-        # Empty
-        html.Div(className='six columns'),
-    ], className='twleve columns'),
-
-    # Match Results Grid
-    html.Div([
-
-        # Match Results Table
-        html.Div(
-            html.Table(id='match-results'),
-            className='six columns'
+    dashapp.layout = html.Div(
+      html.Div([
+        html.H1('Speakeasy'),
+        html.H2('Dashboard'),
+        html.H3('** Live Feed every 5 milliseconds **'),
+        dt.DataTable(
+            rows=[{}], # initialise the rows
+            filterable=True,
+            sortable=True,
+            id='table-results'
+        ),
+        dcc.Graph(id='graph1'),
+        dcc.Interval(
+            id='interval-component',
+            interval=5*1000, # in milliseconds
+            n_intervals=0
         )
-
-        ], className='six columns')
-    ])
+      ])
+    )
 
     @dashapp.callback(
-        Output(component_id='match-results', component_property='children'),
+        Output('table-results', 'rows'),
         [
-            Input(component_id='lang_model-selector', component_property='value')
+            Input('interval-component', 'n_intervals')
         ]
     )
-    def load_match_results(lang_model):
-        results = get_match_results(lang_model)
-        return generate_table(results, max_rows=50)
+    def load_match_results(ignoreme):
+        results = get_match_results()
+        return results
+
+    @dashapp.callback(
+        Output('graph1', 'figure'),
+        [
+            Input('interval-component', 'n_intervals')
+        ]
+    )
+    def load_graph1_results(ignoreme):
+        filtered_results = nifi_collection.find(
+            {'metadata.keywords': {'$nin': [ None, '']}},
+            {'source': 1, 'metadata.keywords': 1 }
+        )
+        filtered_dict = mongo_to_dictionary(filtered_results)
+        word_file = pd.DataFrame()
+        for record in filtered_dict:
+            for kw in record['metadata.keywords'].split(','):
+               row = {'watch': kw, 'filename': record['source'], 'id': record['_id.$oid']} 
+               word_file = word_file.append(row, ignore_index=True)
+
+        counts=word_file.groupby(['watch']).size().reset_index(name='count')
+        top_10=counts.nlargest(10, 'count')
+        watch_list = []
+        count_list = []
+        file_list = []
+        for index, row in top_10.iterrows():
+            watch_list.insert(index, row['watch'])
+            count_list.insert(index, row['count'])
+            matches = []
+            for i, r in word_file.iterrows():
+              if (row['watch'] == r['watch']): 
+                 matches.append( '('+ r['id']+') '+r['filename'] )
+            file_list.insert(index, matches)
+
+        barSet = go.Bar(
+            x=watch_list,
+            y=count_list,
+            text=file_list,
+            marker=dict(
+                color='#17BECF',
+            ),
+            opacity=0.6
+        )
+        figure={
+            'data': [barSet],
+            'layout': go.Layout(
+                    title='10 Most Popular Keywords (All Time)'
+            )
+        }
+        return figure
 
     return dashapp
 
 if __name__ == "__main__":
    server = create_app()
    MONGO_CONNECT = utils.get_env_var_setting('MONGO_CONNECT', 'youloose')
-   log.debug(MONGO_CONNECT)
    db = MongoClient(MONGO_CONNECT).get_database()
    nifi_collection = db.nifi
    dashapp = create_dash(server)

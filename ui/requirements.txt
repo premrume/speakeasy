@@ -3,7 +3,9 @@ gunicorn
 dash
 dash-core-components
 dash-html-components
+dash-table-experiments
 pandas-datareader
+matplotlib
 flask-sqlalchemy
 flask-migrate
 flask-login
