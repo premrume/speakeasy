@@ -6,6 +6,8 @@ import pytesseract
 from PIL import Image
 from summa import summarizer, keywords
 import json
+import PyPDF2
+import docxpy
 
 log = logging.getLogger(__name__)
 
@@ -15,7 +17,6 @@ def make_clean_image(path):
     image=cv2.imread(path)
     gray = cv2.cvtColor(image,cv2.COLOR_RGB2GRAY)
     # peggy hack
-    log.debug('aaaaaaaaaaaaaa inverse text')
     gray = cv2.bitwise_not(gray)
     ret2,th2 = cv2.threshold(gray,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
     dst = cv2.fastNlMeansDenoising(th2,10,10,7)
@@ -73,4 +74,40 @@ def make_summary(path,language):
     except Exception as e:
         raise
     answer = {'summary' : summary.replace('\n',' ') }
+    return answer
+
+# very very simple get the idea in place
+def make_pdf(path,language):
+    try:
+        pdfFileObj = open(path,'rb')     #'rb' for read binary mode
+        pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
+        num_pages=pdfReader.numPages
+        #loop to extract all text 
+        text_list=[]
+        for page in range(num_pages):
+            pageObj = pdfReader.getPage(page)          
+            text=pageObj.extractText()
+            text_list.append(text.replace('\n', ' ' ))
+        tmpname = path + '.txt'
+        outfile = open(tmpname, 'w')
+        outfile.write('\n'.join(text_list))
+
+    except Exception as e:
+        raise
+    answer = {'cvt' : tmpname }
+    return answer
+
+# very very simple get the idea in place
+def make_docx(path,language):
+    try:
+        log.debug('ddddddddddddddd docx ')
+        text = docxpy.process(path)
+        log.debug('ddddd')
+        tmpname = path + '.txt'
+        outfile = open(tmpname, 'w')
+        outfile.write(text.replace('\n',' '))
+
+    except Exception as e:
+        raise
+    answer = {'cvt' : tmpname }
     return answer

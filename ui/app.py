@@ -23,7 +23,7 @@ import json
 
 def mongo_to_dictionary(mongo_data):
     sanitized = json.loads(json_util.dumps(mongo_data))
-    normalized = json_normalize(sanitized)
+    normalized = json_normalize(sanitized, sep='_')
     records = normalized.to_dict('records')
     return records
 
@@ -52,7 +52,7 @@ def create_dash(server):
       html.Div([
         html.H1('Speakeasy'),
         html.H2('Dashboard'),
-        html.H3('** Live Feed every 5 milliseconds **'),
+        html.H3('** Live Feed every 30 milliseconds **'),
         dt.DataTable(
             rows=[{}], # initialise the rows
             filterable=True,
@@ -62,7 +62,7 @@ def create_dash(server):
         dcc.Graph(id='graph1'),
         dcc.Interval(
             id='interval-component',
-            interval=5*1000, # in milliseconds
+            interval=30*1000, # in milliseconds
             n_intervals=0
         )
       ])
@@ -92,8 +92,8 @@ def create_dash(server):
         filtered_dict = mongo_to_dictionary(filtered_results)
         word_file = pd.DataFrame()
         for record in filtered_dict:
-            for kw in record['metadata.keywords'].split(','):
-               row = {'watch': kw, 'filename': record['source'], 'id': record['_id.$oid']} 
+            for kw in record['metadata_keywords'].split(','):
+               row = {'watch': kw, 'filename': record['source'], 'id': record['_0']} 
                word_file = word_file.append(row, ignore_index=True)
 
         counts=word_file.groupby(['watch']).size().reset_index(name='count')

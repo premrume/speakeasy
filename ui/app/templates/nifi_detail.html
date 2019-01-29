@@ -24,7 +24,9 @@
           <p class="card-text text-left">Name: [{{ nifi.input.filename }}]</p>
           <p class="card-text text-left">Size: [{{ nifi.input.fileSize }}]</p>
         </div>
-        {% if nifi.input_data.grid %}
+        {% if nifi.docx_data.grid %}
+        {% elif nifi.pdf_data.grid %}
+        {% elif nifi.input_data.grid %}
         <div class="card-footer">
            <a href="{{ url_for('nifi.go_nifi_input', uuid=nifi.uuid) }}" class="card-link">original</a>
         </div>
@@ -46,6 +48,42 @@
        <div class="card-footer">
           <a href="{{ url_for('nifi.go_nifi_clean', uuid=nifi.uuid) }}" class="card-link">clean</a>
           <a href="{{ url_for('nifi.go_nifi_ocr', uuid=nifi.uuid) }}" class="card-link">ocr</a>
+       </div>
+      {% endif %}
+     </div>
+     {% endif %}
+
+     <!--.card-->
+     {% if nifi.docx.msg %}
+     <div class="card border-dark mb-3" style="max-width: 28rem;">
+        <div class="card-header">
+          <p class="card-text text-right"><small class="text-muted">{{ nifi.docx.start }}</small></p>
+          <h4 class="card-title">Processed DOCX</h4>
+        </div>
+       <div class="card-body text-dark">
+         <h5 class="card-title">{{ nifi.docx.msg }}</h5>
+       </div>
+       {% if nifi.docx_data.grid %}
+       <div class="card-footer">
+          <a href="{{ url_for('nifi.go_nifi_docx', uuid=nifi.uuid) }}" class="card-link">docxText</a>
+       </div>
+      {% endif %}
+     </div>
+     {% endif %}
+
+     <!--.card-->
+     {% if nifi.pdf.msg %}
+     <div class="card border-dark mb-3" style="max-width: 28rem;">
+        <div class="card-header">
+          <p class="card-text text-right"><small class="text-muted">{{ nifi.pdf.start }}</small></p>
+          <h4 class="card-title">Processed PDF</h4>
+        </div>
+       <div class="card-body text-dark">
+         <h5 class="card-title">{{ nifi.pdf.msg }}</h5>
+       </div>
+       {% if nifi.pdf_data.grid %}
+       <div class="card-footer">
+          <a href="{{ url_for('nifi.go_nifi_pdf', uuid=nifi.uuid) }}" class="card-link">pdfText</a>
        </div>
       {% endif %}
      </div>

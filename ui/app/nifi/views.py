@@ -92,6 +92,10 @@ def go_nifi_details(nifi_uuid):
       patchmain.ocr_data.payload=ObjectId(patchmain.ocr_data.grid)
     if patchmain.translate_data:
       patchmain.translate_data.payload=ObjectId(patchmain.translate_data.grid)
+    if patchmain.docx_data:
+      patchmain.docx_data.payload=ObjectId(patchmain.docx_data.grid)
+    if patchmain.pdf_data:
+      patchmain.pdf_data.payload=ObjectId(patchmain.pdf_data.grid)
     patchmain.save()
 
     nifi = Nifi.objects.get(uuid=nifi_uuid)
@@ -122,14 +126,21 @@ def go_nifi_input(uuid):
 def go_nifi_input_other(uuid):
 
     nifi = Nifi.objects.get(uuid=uuid)
-
-    # gotta check if the input_data is a jpg -DUH!!!!!
-    if nifi.input_data.context_type == 'text/plain':
+    
+    file_name, file_extension = os.path.splitext(nifi.source)
+    if file_extension == '.txt':
       input_file = nifi.input_data.payload.read()
-      input_display = str(input_file, 'UTF-8')
-    else:
+    elif file_extension == '.jpg':
       input_file = nifi.ocr_data.payload.read()
-      input_display = str(input_file, 'UTF-8')
+    elif file_extension == '.png':
+      input_file = nifi.ocr_data.payload.read()
+    elif file_extension == '.docx':
+      input_file = nifi.docx_data.payload.read()
+    elif file_extension == '.pdf':
+      input_file = nifi.pdf_data.payload.read()
+    else:
+       input_file = 'mongodb.datab.is.bad'
+    input_display = str(input_file, 'UTF-8')
 
     output_file = nifi.translate_data.payload.read()
     output_display = str(output_file, 'UTF-8')
@@ -151,6 +162,16 @@ def go_nifi_clean(uuid):
 def go_nifi_ocr(uuid):
     nifi = Nifi.objects.get(uuid=uuid)
     return send_file(nifi.ocr_data.payload, mimetype=nifi.ocr_data.context_type)
+@nifi_blueprint.route('/docx/<uuid>', methods=['GET'])
+@login_required
+def go_nifi_docx(uuid):
+    nifi = Nifi.objects.get(uuid=uuid)
+    return send_file(nifi.docx_data.payload, mimetype=nifi.docx_data.context_type)
+@nifi_blueprint.route('/pdf/<uuid>', methods=['GET'])
+@login_required
+def go_nifi_pdf(uuid):
+    nifi = Nifi.objects.get(uuid=uuid)
+    return send_file(nifi.pdf_data.payload, mimetype=nifi.pdf_data.context_type)
 
 # Redirect : forced it, nothing fancy here
 @nifi_blueprint.route('/redirectdash/')

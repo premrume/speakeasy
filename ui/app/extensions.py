@@ -10,14 +10,17 @@ login = LoginManager()
 
 ################
 # nifi stuff
+#from flask_uploads import UploadSet, IMAGES, TEXT, DOCUMENTS
 from flask_uploads import UploadSet, IMAGES, TEXT
 from flask_mongoengine import MongoEngine
 
 dbm = MongoEngine()
 
+DOCUMENTS = tuple('docx pdf'.split())
+
 ################
 #### flask-uploads pain ####
 ################
-ende = UploadSet('ende', IMAGES + TEXT)
-kor = UploadSet('kor', IMAGES + TEXT)
-enko = UploadSet('enko', IMAGES + TEXT)
+ende = UploadSet('ende', IMAGES + TEXT + DOCUMENTS)
+kor = UploadSet('kor', IMAGES + TEXT + DOCUMENTS)
+enko = UploadSet('enko', IMAGES + TEXT + DOCUMENTS)

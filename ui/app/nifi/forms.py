@@ -6,10 +6,10 @@ from flask_wtf.file import FileField, FileAllowed, FileRequired
 
 class AddNifiForm(FlaskForm):
     upload = FileField(
-      u'Choose 1 to 5 Files (jpg, png, txt)', 
+      u'Choose 1 to 5 Files (jpg, png, txt, docx, pdf)', 
       validators=[
         FileRequired(),
-        FileAllowed(['jpg', 'png', 'txt'], 'Simple File Types only!!!')
+        FileAllowed(['jpg', 'png', 'txt', 'docx', 'pdf'], 'File Types')
       ]
     )
     model = SelectField(

@@ -59,6 +59,38 @@ class Clean_data(dbm.EmbeddedDocument):
     payload = dbm.FileField()
     context_type = dbm.StringField()
 
+class Docx(dbm.EmbeddedDocument):
+    meta = {
+      'strict' : False
+    }
+    msg = dbm.StringField()
+    start = dbm.StringField()
+    lang = dbm.StringField()
+
+class Docx_data(dbm.EmbeddedDocument):
+    meta = {
+      'strict' : False
+    }
+    grid = dbm.StringField()
+    payload = dbm.FileField()
+    context_type = dbm.StringField()
+
+class Pdf(dbm.EmbeddedDocument):
+    meta = {
+      'strict' : False
+    }
+    msg = dbm.StringField()
+    start = dbm.StringField()
+    lang = dbm.StringField()
+
+class Pdf_data(dbm.EmbeddedDocument):
+    meta = {
+      'strict' : False
+    }
+    grid = dbm.StringField()
+    payload = dbm.FileField()
+    context_type = dbm.StringField()
+
 class Complete(dbm.EmbeddedDocument):
     meta = {
       'strict' : False
@@ -100,6 +132,10 @@ class Nifi(dbm.Document):
     ocr = dbm.EmbeddedDocumentField(Ocr)
     ocr_data = dbm.EmbeddedDocumentField(Ocr_data)
     clean_data = dbm.EmbeddedDocumentField(Clean_data)
+    docx = dbm.EmbeddedDocumentField(Docx)
+    docx_data = dbm.EmbeddedDocumentField(Docx_data)
+    pdf = dbm.EmbeddedDocumentField(Pdf)
+    pdf_data = dbm.EmbeddedDocumentField(Pdf_data)
     complete = dbm.EmbeddedDocumentField(Complete)
     route = dbm.EmbeddedDocumentField(Route)
     metadata = dbm.EmbeddedDocumentField(Metadata)
@@ -129,4 +165,6 @@ class PatchMain(dbm.Document):
     translate_data = dbm.EmbeddedDocumentField(PatchSub)
     ocr_data = dbm.EmbeddedDocumentField(PatchSub)
     clean_data = dbm.EmbeddedDocumentField(PatchSub)
+    docx_data = dbm.EmbeddedDocumentField(PatchSub)
+    pdf_data = dbm.EmbeddedDocumentField(PatchSub)
 
