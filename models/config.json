@@ -1,12 +1,12 @@
 {
-	"version": "9",
-	"hosts": {
-		"sofwerx": {
-			"url": "https://your url",
-			"accessKey": "your accessKey",
-			"secretKey": "your secretKey",
-			"api": "S3v2",
-			"lookup": "auto"
-		}
-	}
+        "version": "9",
+        "hosts": {
+                "sofwerx": {
+                        "url": "https://speakeasy-minio.supermicro5.opswerx.org",
+                        "accessKey": "speakeasy",
+                        "secretKey": "ua8Loo5ux8sax8T",
+                        "api": "S3v2",
+                        "lookup": "auto"
+                }
+        }
 }
