@@ -31,14 +31,18 @@ OpenSSL version: OpenSSL 1.1.0f  25 May 2017
 # Assumption is that you setup your token to clone from BAH...
 cd
 git clone https://github.boozallencsn.com/tampaml/speakeasy.git --branch V0.7
+OR
+git clone https://github.com/premrume/speakeasy/tree/V0.8 --branch V0.8
 ```
 
 2. Configuration
 > If  your .env does not have the right values ... THIS  WILL FAIL!!! Having the correct .env is REQUIRED.
 ```
+# GO ASK PEGGY
 # ./models/config.json needs YOUR access keys!
+# ./.env needs values ..
 SPEAKEASY_SHARED=/var/speakeasy
-SPEAKEASY_VERSION=1.07
+SPEAKEASY_VERSION=1.08
 SPEAKEASY_MINIO_URL=          GO ASK PEGGY
 SPEAKEASY_MINIO_ACCESS_KEY=   GO ASK PEGGY
 SPEAKEASY_MINIO_SECRET_KEY=   GO ASK PEGGY
