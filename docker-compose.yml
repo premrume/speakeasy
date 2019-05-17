@@ -33,6 +33,7 @@ services:
     build: ./ui
     restart: always
     environment:
+      - PYTHONUNBUFFERED=0
       - FLASK_SERVER_NAME=0.0.0.0
       - FLASK_SERVER_PORT=5000
       - FLASK_DEBUG=0
@@ -47,7 +48,6 @@ services:
       - "5000:5000"
     volumes:
       - file_share:/var/speakeasy
-      - peggy:/var/ui
     networks:
       - speakeasy
 
@@ -202,8 +202,6 @@ volumes:
   models:
     driver: local
   file_share:
-    driver: local
-  peggy:
     driver: local
 
 networks:

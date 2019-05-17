@@ -41,9 +41,11 @@ def get_match_results():
     return mongo_to_dictionary(cursor)
 
 def create_dash(server):
+    # I have this commented out of the html, it is failing
     dashapp = dash.Dash(__name__, server=server, url_base_pathname='/dashboard/')
 
-    # todo bring this into the project
+    # todo bring this into the project - cannot run with http in demo.
+    #  found no easy-peasy way to do this in dash
     dashapp.css.append_css({
         "external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"
     })
@@ -85,14 +87,23 @@ def create_dash(server):
         ]
     )
     def load_graph1_results(ignoreme):
+        dashapp.logger.info('aaaaaaaaaaaaaaaaaaa');
         filtered_results = nifi_collection.find(
             {'metadata.keywords': {'$nin': [ None, '']}},
             {'source': 1, 'metadata.keywords': 1 }
         )
+        print(filtered_results)
+        print('bbbbbbbbbbbbbbbbb')
         filtered_dict = mongo_to_dictionary(filtered_results)
+        print(filtered_dict)
+        print('ccccccccccccccccc')
         word_file = pd.DataFrame()
         for record in filtered_dict:
+            print('xxxxxxxxxxxx')
+            print(record)
             for kw in record['metadata_keywords'].split(','):
+               print('yyyyyyyyyyyy')
+               print(kw)
                row = {'watch': kw, 'filename': record['source'], 'id': record['_0']} 
                word_file = word_file.append(row, ignore_index=True)
 

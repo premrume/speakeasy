@@ -31,5 +31,5 @@ RUN \
   && flask db migrate -m "init" \
   && flask db upgrade
 
-ENTRYPOINT ["python"]
-CMD ["app.py"]
+#ENTRYPOINT ["python"]
+CMD ["python","-u","app.py"]

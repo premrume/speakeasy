@@ -1,5 +1,5 @@
 .git
-./.env
+.env
 ./models/ende
 models/ende
 ./ui/ENV
